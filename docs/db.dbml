@@ -1,0 +1,98 @@
+// Copy this text, paste to https://dbdiagram.io/d
+// Or, https://databasediagram.com/app
+
+Table Bookmark {
+    id INTEGER [primary key]
+    user_id INTEGER 
+    query_id INTEGER 
+    notes TEXT 
+    }
+
+Table Query {
+    id INTEGER [primary key]
+    user_id INTEGER 
+    query_text TEXT 
+    executed_at DATETIME 
+    }
+
+Table User {
+    id INTEGER [primary key]
+    username VARCHAR 
+    email VARCHAR 
+    }
+
+Table Document {
+    id INTEGER [primary key]
+    content TEXT 
+    indexed_at DATETIME 
+    }
+
+Table Feedback {
+    id INTEGER [primary key]
+    user_id INTEGER 
+    query_id INTEGER 
+    feedback_text TEXT 
+    rating INTEGER 
+    }
+
+Table IndexingTask {
+    id INTEGER [primary key]
+    task_description TEXT 
+    started_at DATETIME 
+    completed_at DATETIME 
+    }
+
+Table OpensearchConfig {
+    id INTEGER [primary key]
+    config_name VARCHAR 
+    config_value TEXT 
+    }
+
+Table QueryStatistic {
+    id INTEGER [primary key]
+    query_id INTEGER 
+    execution_time_ms FLOAT 
+    result_count INTEGER 
+    }
+
+Table SearchResult {
+    id INTEGER [primary key]
+    query_id INTEGER 
+    result_text TEXT 
+    relevance_score FLOAT 
+    }
+
+Table SystemLog {
+    id INTEGER [primary key]
+    log_message TEXT 
+    log_level VARCHAR 
+    created_at DATETIME 
+    }
+
+Table UserActivity {
+    id INTEGER [primary key]
+    user_id INTEGER 
+    activity_description TEXT 
+    timestamp DATETIME 
+    }
+
+Table UserSession {
+    id INTEGER [primary key]
+    user_id INTEGER 
+    session_token VARCHAR 
+    login_time DATETIME 
+    logout_time DATETIME 
+    }
+
+
+
+// Relationships
+    Ref: Bookmark.(query_id) < Query.(id)
+    Ref: Bookmark.(user_id) < User.(id)
+    Ref: Query.(user_id) < User.(id)
+    Ref: Feedback.(query_id) < Query.(id)
+    Ref: Feedback.(user_id) < User.(id)
+    Ref: QueryStatistic.(query_id) < Query.(id)
+    Ref: SearchResult.(query_id) < Query.(id)
+    Ref: UserActivity.(user_id) < User.(id)
+    Ref: UserSession.(user_id) < User.(id)

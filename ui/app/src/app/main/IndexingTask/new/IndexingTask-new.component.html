@@ -1,0 +1,22 @@
+<o-form #IndexingTaskForm attr="IndexingTask_form_insert" service="IndexingTask" entity="IndexingTask" 
+keys="id" fxLayout="column" show-header="yes" header-actions="I"
+horizontal-scroll="yes"
+after-insert-mode="new" class="standalone-form-container" (onInsertMode)="onInsertMode()">
+
+<o-row attr="row1" layout-align="start stretch">
+  <div fxLayout="row wrap" fxLayoutAlign="start start" fxFlex fxLayoutGap="14px">
+    
+        <o-text-input #task_description attr="task_description" label=" task_description*" enabled="yes" required="yes" fxFlex="20%" class="form-field"></o-text-input>
+      
+        <o-date-input #started_at attr="started_at" type="date" label="started_at" enabled="yes" required="yes" format="LL" fxFlex="20%" class="form-field"></o-date-input>
+      
+        <o-date-input #completed_at attr="completed_at" type="date" label="completed_at" enabled="yes" required="no" format="LL" fxFlex="20%" class="form-field"></o-date-input>
+      
+        <o-integer-input #id attr="id" label="id" type="integer" editable="no" required="no" ></o-integer-input>
+      
+</div>
+</o-row>
+
+<div layout-padding></div>
+
+</o-form>

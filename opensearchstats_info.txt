@@ -1,0 +1,1 @@
+A web app to connect to opensearch and display various statistics. 

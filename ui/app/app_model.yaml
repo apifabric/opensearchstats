@@ -1,0 +1,495 @@
+about:
+  date: October 20, 2024 06:46:12
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+entities:
+  Bookmark:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: query_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: user_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: notes
+      template: text
+      type: TEXT
+    description: Allows users to save certain search results for quick access.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Allows users to save certain search results for quick access.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - query_id
+      name: query
+      resource: Query
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: Bookmark
+  Document:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: content
+      required: true
+      template: text
+      type: TEXT
+    - name: indexed_at
+      required: true
+      template: date
+      type: DATETIME
+    description: Stores documents that are indexed into OpenSearch.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Stores documents that are indexed into OpenSearch.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    type: Document
+  Feedback:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: query_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: user_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: feedback_text
+      template: text
+      type: TEXT
+    - name: rating
+      template: integer
+      type: INTEGER
+    description: Collects user feedback on their search results.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Collects user feedback on their search results.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - query_id
+      name: query
+      resource: Query
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: Feedback
+  IndexingTask:
+    columns:
+    - label: ' task_description*'
+      name: task_description
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: TEXT
+    - name: started_at
+      required: true
+      template: date
+      type: DATETIME
+    - name: completed_at
+      template: date
+      type: DATETIME
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Represents tasks related to indexing data in OpenSearch.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: task_description
+    home_template: home_template.html
+    info_list: Represents tasks related to indexing data in OpenSearch.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    type: IndexingTask
+  OpensearchConfig:
+    columns:
+    - label: ' config_name*'
+      name: config_name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: config_value
+      required: true
+      template: text
+      type: TEXT
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Contains configuration details for connecting to OpenSearch.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: config_name
+    home_template: home_template.html
+    info_list: Contains configuration details for connecting to OpenSearch.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    type: OpensearchConfig
+  Query:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: user_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: query_text
+      required: true
+      template: text
+      type: TEXT
+    - name: executed_at
+      required: true
+      template: date
+      type: DATETIME
+    description: Represents searches made by users to OpenSearch.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Represents searches made by users to OpenSearch.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - query_id
+      name: BookmarkList
+      resource: Bookmark
+    - direction: tomany
+      fks:
+      - query_id
+      name: FeedbackList
+      resource: Feedback
+    - direction: tomany
+      fks:
+      - query_id
+      name: QueryStatisticList
+      resource: QueryStatistic
+    - direction: tomany
+      fks:
+      - query_id
+      name: SearchResultList
+      resource: SearchResult
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: Query
+  QueryStatistic:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: query_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: execution_time_ms
+      required: true
+      template: real
+      type: FLOAT
+    - name: result_count
+      required: true
+      template: integer
+      type: INTEGER
+    description: Analyzes and stores statistics about query durations and results.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Analyzes and stores statistics about query durations and results.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - query_id
+      name: query
+      resource: Query
+    type: QueryStatistic
+  SearchResult:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: query_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: result_text
+      required: true
+      template: text
+      type: TEXT
+    - name: relevance_score
+      template: real
+      type: FLOAT
+    description: Stores results obtained from OpenSearch for each query.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Stores results obtained from OpenSearch for each query.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - query_id
+      name: query
+      resource: Query
+    type: SearchResult
+  SystemLog:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: log_message
+      required: true
+      template: text
+      type: TEXT
+    - name: log_level
+      required: true
+      template: text
+      type: VARCHAR
+    - name: created_at
+      required: true
+      template: date
+      type: DATETIME
+    description: Logs system-related events and errors.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Logs system-related events and errors.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    type: SystemLog
+  User:
+    columns:
+    - label: ' username*'
+      name: username
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: email
+      required: true
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Stores information about the users of the web app.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: username
+    home_template: home_template.html
+    info_list: Stores information about the users of the web app.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - user_id
+      name: BookmarkList
+      resource: Bookmark
+    - direction: tomany
+      fks:
+      - user_id
+      name: FeedbackList
+      resource: Feedback
+    - direction: tomany
+      fks:
+      - user_id
+      name: QueryList
+      resource: Query
+    - direction: tomany
+      fks:
+      - user_id
+      name: UserActivityList
+      resource: UserActivity
+    - direction: tomany
+      fks:
+      - user_id
+      name: UserSessionList
+      resource: UserSession
+    type: User
+  UserActivity:
+    columns:
+    - label: ' activity_description*'
+      name: activity_description
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: TEXT
+    - name: user_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: timestamp
+      required: true
+      template: date
+      type: DATETIME
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Tracks user activities within the web application.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: activity_description
+    home_template: home_template.html
+    info_list: Tracks user activities within the web application.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: UserActivity
+  UserSession:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: user_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: session_token
+      required: true
+      template: text
+      type: VARCHAR
+    - name: login_time
+      required: true
+      template: date
+      type: DATETIME
+    - name: logout_time
+      template: date
+      type: DATETIME
+    description: Manages user sessions for authentication.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Manages user sessions for authentication.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: UserSession
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    edit_on_mode: dblclick
+    include_translation: false
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    mode: tab
+    pick_style: list
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: false

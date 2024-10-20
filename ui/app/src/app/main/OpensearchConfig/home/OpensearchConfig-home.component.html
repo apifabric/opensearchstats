@@ -1,0 +1,35 @@
+<o-form-layout-manager attr="OpensearchConfig" mode="dialog" title="OPENSEARCHCONFIG">
+    <div fxFill fxLayout="column" fxLayoutAlign="start">
+        <o-table 
+            attr="OpensearchConfigTable" 
+            service="OpensearchConfig" 
+            entity="OpensearchConfig" 
+            title="OPENSEARCHCONFIG"
+            keys="id"
+            columns="config_name;config_value;id" 
+            header-actions="R;D"
+            visible-columns="config_name;config_value;id"  
+            sort-columns="config_name" 
+            query-rows="20" 
+            quick-filter="yes"
+            row-height="medium" 
+            select-all-checkbox="true" 
+            pageable="yes"  
+            auto-adjust="true" 
+            virtual-scroll="yes" 
+            edition-mode="dblclick"
+            horizontal-scroll="yes"
+            show-title="yes"
+            export-button="yes">
+            
+            <o-table-column #config_name attr="config_name" title=" config_name*" editable="no" required="yes" content-align="left"></o-table-column>
+            
+            <o-table-column #config_value attr="config_value" title="config_value" editable="no" required="yes" content-align="left"></o-table-column>
+            
+            <o-table-column #id attr="id" title="id" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+            
+            <o-table-context-menu></o-table-context-menu>
+            <o-table-paginator page-size-options="24;48;96"></o-table-paginator>
+        </o-table>
+    </div>
+</o-form-layout-manager>

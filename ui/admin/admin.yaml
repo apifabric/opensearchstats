@@ -1,0 +1,323 @@
+about:
+  date: October 20, 2024 06:46:12
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 9
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  Bookmark:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: query_id
+      required: true
+    - name: user_id
+      required: true
+    - name: notes
+    description: Allows users to save certain search results for quick access.
+    info_list: Allows users to save certain search results for quick access.
+    tab_groups:
+    - direction: toone
+      fks:
+      - query_id
+      name: query
+      resource: Query
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: Bookmark
+    user_key: id
+  Document:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: content
+      required: true
+    - name: indexed_at
+      required: true
+    description: Stores documents that are indexed into OpenSearch.
+    info_list: Stores documents that are indexed into OpenSearch.
+    type: Document
+    user_key: id
+  Feedback:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: query_id
+      required: true
+    - name: user_id
+      required: true
+    - name: feedback_text
+    - name: rating
+    description: Collects user feedback on their search results.
+    info_list: Collects user feedback on their search results.
+    tab_groups:
+    - direction: toone
+      fks:
+      - query_id
+      name: query
+      resource: Query
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: Feedback
+    user_key: id
+  IndexingTask:
+    attributes:
+    - label: ' task_description*'
+      name: task_description
+      required: true
+      search: true
+      sort: true
+    - name: started_at
+      required: true
+    - name: completed_at
+    - name: id
+    description: Represents tasks related to indexing data in OpenSearch.
+    info_list: Represents tasks related to indexing data in OpenSearch.
+    type: IndexingTask
+    user_key: task_description
+  OpensearchConfig:
+    attributes:
+    - label: ' config_name*'
+      name: config_name
+      required: true
+      search: true
+      sort: true
+    - name: config_value
+      required: true
+    - name: id
+    description: Contains configuration details for connecting to OpenSearch.
+    info_list: Contains configuration details for connecting to OpenSearch.
+    type: OpensearchConfig
+    user_key: config_name
+  Query:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: user_id
+      required: true
+    - name: query_text
+      required: true
+    - name: executed_at
+      required: true
+    description: Represents searches made by users to OpenSearch.
+    info_list: Represents searches made by users to OpenSearch.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - query_id
+      name: BookmarkList
+      resource: Bookmark
+    - direction: tomany
+      fks:
+      - query_id
+      name: FeedbackList
+      resource: Feedback
+    - direction: tomany
+      fks:
+      - query_id
+      name: QueryStatisticList
+      resource: QueryStatistic
+    - direction: tomany
+      fks:
+      - query_id
+      name: SearchResultList
+      resource: SearchResult
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: Query
+    user_key: id
+  QueryStatistic:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: query_id
+      required: true
+    - name: execution_time_ms
+      required: true
+    - name: result_count
+      required: true
+    description: Analyzes and stores statistics about query durations and results.
+    info_list: Analyzes and stores statistics about query durations and results.
+    tab_groups:
+    - direction: toone
+      fks:
+      - query_id
+      name: query
+      resource: Query
+    type: QueryStatistic
+    user_key: id
+  SearchResult:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: query_id
+      required: true
+    - name: result_text
+      required: true
+    - name: relevance_score
+    description: Stores results obtained from OpenSearch for each query.
+    info_list: Stores results obtained from OpenSearch for each query.
+    tab_groups:
+    - direction: toone
+      fks:
+      - query_id
+      name: query
+      resource: Query
+    type: SearchResult
+    user_key: id
+  SystemLog:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: log_message
+      required: true
+    - name: log_level
+      required: true
+    - name: created_at
+      required: true
+    description: Logs system-related events and errors.
+    info_list: Logs system-related events and errors.
+    type: SystemLog
+    user_key: id
+  User:
+    attributes:
+    - label: ' username*'
+      name: username
+      required: true
+      search: true
+      sort: true
+    - name: email
+      required: true
+    - name: id
+    description: Stores information about the users of the web app.
+    info_list: Stores information about the users of the web app.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - user_id
+      name: BookmarkList
+      resource: Bookmark
+    - direction: tomany
+      fks:
+      - user_id
+      name: FeedbackList
+      resource: Feedback
+    - direction: tomany
+      fks:
+      - user_id
+      name: QueryList
+      resource: Query
+    - direction: tomany
+      fks:
+      - user_id
+      name: UserActivityList
+      resource: UserActivity
+    - direction: tomany
+      fks:
+      - user_id
+      name: UserSessionList
+      resource: UserSession
+    type: User
+    user_key: username
+  UserActivity:
+    attributes:
+    - label: ' activity_description*'
+      name: activity_description
+      required: true
+      search: true
+      sort: true
+    - name: user_id
+      required: true
+    - name: timestamp
+      required: true
+    - name: id
+    description: Tracks user activities within the web application.
+    info_list: Tracks user activities within the web application.
+    tab_groups:
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: UserActivity
+    user_key: activity_description
+  UserSession:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: user_id
+      required: true
+    - name: session_token
+      required: true
+    - name: login_time
+      required: true
+    - name: logout_time
+    description: Manages user sessions for authentication.
+    info_list: Manages user sessions for authentication.
+    tab_groups:
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: UserSession
+    user_key: id
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'
